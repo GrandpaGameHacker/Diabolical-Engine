@@ -86,10 +86,11 @@ bool BasicRendererSystem::Initialize(BasicRenderer& renderer)
 
 void BasicRendererSystem::Render(BasicRenderer& renderer)
 {
+	
 	glUseProgram(renderer.shaderProgram);
 	glBindVertexArray(renderer.VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glBindVertexArray(0);
 
-	SDL_GL_SwapWindow(WindowManager::GetSDLWindow());
+	
 }

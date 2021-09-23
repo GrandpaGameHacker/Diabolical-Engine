@@ -5,34 +5,77 @@
 #include <chrono>
 #include "SDL2/SDL.h"
 #include "ECS/flecs.h"
-extern flecs::world ecs;
+#include "../imgui/imgui_impl_opengl3.h"
+#include "../imgui/imgui_impl_sdl.h"
+#include "Rendering/ECSImGuiTest/ImGuiECS.h"
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
 int GameManager::Frame = 0;
+flecs::world ecs;
 
-static flecs::world ecs;
+void InitializeImGui()
+{
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.DisplaySize = ImVec2((float)WindowManager::GetWindowSize().width, (float)WindowManager::GetWindowSize().height);
+	ImGui::StyleColorsDark();
+	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui_ImplSDL2_InitForOpenGL(WindowManager::GetSDLWindow(), WindowManager::GetGLContext());
+}
+
+void StartNewFrame()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+}
+
+void EndFrame()
+{
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	SDL_GL_SwapWindow(WindowManager::GetSDLWindow());
+}
+
+void InitializeTestECS()
+{
+	ecs.entity("ImPooi")
+		.add<ImGuiECSTest::ImGuiTestComponent>();	
+
+	ecs.system<ImGuiECSTest::ImGuiTestComponent>()
+		.each(ImGuiECSTest::ImGuiTestSystem);
+}
+
 void GameManager::MainGameLoop()
 {
 	LOGVERBOSE("GameManager::MainGameLoop()", "Main game loop started");
-	ecs.trigger<BasicRenderer>()
-		.event(flecs::OnAdd).each(BasicRendererSystem::Initialize);
-	auto rendererEntity = ecs.entity("BasicRenderer")
-		.add<BasicRenderer>();
-	auto basicRenderer = rendererEntity.get_mut<BasicRenderer>();
-	auto sys = ecs.system<BasicRenderer>()
-		.kind(flecs::OnStore)
+	glClearColor(0.f, 0.f, 0.5f, 1.0f);
+
+	InitializeImGui();
 		.each(BasicRendererSystem::Render);
 
+
+	// Play one frame before showing the window so that we can avoid the white screen of death
+	StartNewFrame();
 	EventTick();
 	ManagerTick();
+	EndFrame();
+	// ===========================
+
 	SDL_ShowWindow(WindowManager::GetSDLWindow());
 	SDL_GL_SetSwapInterval(-1);
 	while (bMainLoopRunning)
 	{
+		StartNewFrame();
 		EventTick();
 		ManagerTick();
+		EndFrame();
 	}
+
+	ImGui::DestroyContext();
 }
 
 int GameManager::GetGameFPS()
@@ -64,17 +107,12 @@ void GameManager::ManagerTick()
 	long long TimeDiff = Time - OldTime;
 	OldTime = Time;
 
-	float DeltaTime = (float)TimeDiff / 1000000000.f;
-
-	glClearColor(0.f, 0.f, 0.f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
 	ecs.progress();
-
 	FPS = 1.f / DeltaTime;
-	GameTime += DeltaTime;
-	Frame++;
 
+	ecs.progress(DeltaTime);
+
+	GameTime += DeltaTime;
 
 }
 
