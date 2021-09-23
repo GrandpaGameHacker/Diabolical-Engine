@@ -78,8 +78,6 @@
     <None Include="Engine\Rendering\Shaders\SpriteVertex.glsl" />
     <None Include="Engine\Rendering\Shaders\TextFragment.glsl" />
     <None Include="Engine\Rendering\Shaders\TextVertex.glsl" />
-    <None Include="imgui-1.84.2\examples\example_emscripten_opengl3\shell_minimal.html" />
-    <None Include="imgui-1.84.2\examples\example_emscripten_wgpu\web\index.html" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Engine\NewFile.txt" />
@@ -138,11 +136,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\libs\flecs-3.0.1-alpha\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\libs\flecs-3.0.1-alpha\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
