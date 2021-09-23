@@ -55,8 +55,8 @@ void GameManager::MainGameLoop()
 	glClearColor(0.f, 0.f, 0.5f, 1.0f);
 
 	InitializeImGui();
-		.each(BasicRendererSystem::Render);
-
+		
+	InitializeTestECS();
 
 	// Play one frame before showing the window so that we can avoid the white screen of death
 	StartNewFrame();
@@ -107,7 +107,7 @@ void GameManager::ManagerTick()
 	long long TimeDiff = Time - OldTime;
 	OldTime = Time;
 
-	ecs.progress();
+	float DeltaTime = (float)TimeDiff / 1000000000.f;
 	FPS = 1.f / DeltaTime;
 
 	ecs.progress(DeltaTime);
