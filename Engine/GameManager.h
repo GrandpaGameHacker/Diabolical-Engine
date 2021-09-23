@@ -1,4 +1,5 @@
 #pragma once
+
 class GameManager
 {
 public:
@@ -9,7 +10,6 @@ public:
 	static float GetFPS();
 	static float GetTime();
 	static int GetFrame();
-
 private:
 	void EventTick();
 	void ManagerTick();
@@ -20,4 +20,5 @@ private:
 	static float FPS;
 	static float GameTime;
 };
+
 

@@ -3,7 +3,7 @@
 #include "RendererComponents.h"
 namespace BasicRendererSystem
 {
-	bool Initialize(BasicRenderer* renderer);
+	bool Initialize(BasicRenderer& renderer);
 	void Render(BasicRenderer& renderer);
 };
 

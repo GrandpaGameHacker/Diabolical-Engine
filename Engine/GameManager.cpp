@@ -10,19 +10,19 @@ extern flecs::world ecs;
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
 int GameManager::Frame = 0;
+
 static flecs::world ecs;
 void GameManager::MainGameLoop()
 {
 	LOGVERBOSE("GameManager::MainGameLoop()", "Main game loop started");
-
+	ecs.trigger<BasicRenderer>()
+		.event(flecs::OnAdd).each(BasicRendererSystem::Initialize);
 	auto rendererEntity = ecs.entity("BasicRenderer")
 		.add<BasicRenderer>();
 	auto basicRenderer = rendererEntity.get_mut<BasicRenderer>();
-	BasicRendererSystem::Initialize(basicRenderer);
 	auto sys = ecs.system<BasicRenderer>()
-		.kind(flecs::PreUpdate)
+		.kind(flecs::OnStore)
 		.each(BasicRendererSystem::Render);
-
 
 	EventTick();
 	ManagerTick();
@@ -65,12 +65,15 @@ void GameManager::ManagerTick()
 	OldTime = Time;
 
 	float DeltaTime = (float)TimeDiff / 1000000000.f;
-	ecs.frame_begin(DeltaTime);
+
+	glClearColor(0.f, 0.f, 0.f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	ecs.progress();
+
 	FPS = 1.f / DeltaTime;
 	GameTime += DeltaTime;
 	Frame++;
-	ecs.frame_end();
 
 
 }

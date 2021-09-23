@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Diabolical.cpp" />
+    <ClCompile Include="Engine\ECS\flecs-os_api-stdcpp.cpp" />
     <ClCompile Include="Engine\ECS\flecs.c" />
     <ClCompile Include="Engine\EngineMain.cpp" />
     <ClCompile Include="Engine\Rendering\FreetypeFontAsset.cpp" />
@@ -35,6 +36,7 @@
   <ItemGroup>
     <ClInclude Include="Diabolical.h" />
     <ClInclude Include="Engine\ECS\flecs.h" />
+    <ClInclude Include="Engine\ECS\flecs_os_api_stdcpp.h" />
     <ClInclude Include="Engine\EngineMain.h" />
     <ClInclude Include="Engine\Rendering\FreetypeFontAsset.h" />
     <ClInclude Include="Engine\Rendering\RendererComponents.h" />
@@ -134,6 +136,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +152,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,6 +168,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -179,6 +184,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

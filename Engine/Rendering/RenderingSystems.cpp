@@ -1,8 +1,7 @@
 #include "RenderingSystems.h"
 #include "..\WindowManager.h"
 #include <iostream>
-
-bool BasicRendererSystem::Initialize(BasicRenderer* renderer)
+bool BasicRendererSystem::Initialize(BasicRenderer& renderer)
 {
 	const GLchar* vertexShaderSource =
 		"#version 330 core\n"
@@ -23,9 +22,9 @@ bool BasicRendererSystem::Initialize(BasicRenderer* renderer)
 	auto wsize = WindowManager::GetWindowSize();
 	GLuint vertexShader;
 	GLuint fragmentShader;
-	renderer->Width = wsize.width;
-	renderer->Height = wsize.height;
-	glViewport(0, 0, renderer->Width, renderer->Height);
+	renderer.Width = wsize.width;
+	renderer.Height = wsize.height;
+	glViewport(0, 0, renderer.Width, renderer.Height);
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -52,13 +51,13 @@ bool BasicRendererSystem::Initialize(BasicRenderer* renderer)
 		return false;
 	}
 
-	renderer->shaderProgram = glCreateProgram();
-	glAttachShader(renderer->shaderProgram, vertexShader);
-	glAttachShader(renderer->shaderProgram, fragmentShader);
-	glLinkProgram(renderer->shaderProgram);
-	glGetProgramiv(renderer->shaderProgram, GL_LINK_STATUS, &success);
+	renderer.shaderProgram = glCreateProgram();
+	glAttachShader(renderer.shaderProgram, vertexShader);
+	glAttachShader(renderer.shaderProgram, fragmentShader);
+	glLinkProgram(renderer.shaderProgram);
+	glGetProgramiv(renderer.shaderProgram, GL_LINK_STATUS, &success);
 	if (!success) {
-		glGetProgramInfoLog(renderer->shaderProgram, 512, NULL, infoLog);
+		glGetProgramInfoLog(renderer.shaderProgram, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 		return false;
 	}
@@ -71,11 +70,11 @@ bool BasicRendererSystem::Initialize(BasicRenderer* renderer)
 	 0.0f,  0.5f, 0.0f  // Top   
 	};
 
-	glGenVertexArrays(1, &renderer->VAO);
-	glGenBuffers(1, &renderer->VBO);
+	glGenVertexArrays(1, &renderer.VAO);
+	glGenBuffers(1, &renderer.VBO);
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-	glBindVertexArray(renderer->VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, renderer->VBO);
+	glBindVertexArray(renderer.VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, renderer.VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
@@ -87,8 +86,6 @@ bool BasicRendererSystem::Initialize(BasicRenderer* renderer)
 
 void BasicRendererSystem::Render(BasicRenderer& renderer)
 {
-	glClearColor(0.f, 0.f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(renderer.shaderProgram);
 	glBindVertexArray(renderer.VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 3);

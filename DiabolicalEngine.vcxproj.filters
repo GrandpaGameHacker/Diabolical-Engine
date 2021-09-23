@@ -51,6 +51,9 @@
     <ClCompile Include="Engine\Rendering\RenderingSystems.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ECS\flecs-os_api-stdcpp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\ECS\flecs.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\RenderingSystems.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ECS\flecs_os_api_stdcpp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
