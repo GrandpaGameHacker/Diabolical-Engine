@@ -75,6 +75,9 @@
     <ClCompile Include="Engine\Rendering\ECSImGuiTest\ImGuiECS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\ECS\flecs-os_api-stdcpp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\ECS\flecs.h">
@@ -146,6 +149,9 @@
     <ClInclude Include="Engine\Rendering\ECSImGuiTest\ImGuiECS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ECS\flecs_os_api_stdcpp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Rendering\Shaders\FXAAFragment.glsl" />
@@ -160,5 +166,8 @@
     <None Include="Engine\Rendering\Shaders\TextVertex.glsl" />
     <None Include="imgui-1.84.2\examples\example_emscripten_opengl3\shell_minimal.html" />
     <None Include="imgui-1.84.2\examples\example_emscripten_wgpu\web\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Engine\NewFile.txt" />
   </ItemGroup>
 </Project>

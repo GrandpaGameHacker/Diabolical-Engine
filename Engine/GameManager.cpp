@@ -53,11 +53,10 @@ void GameManager::MainGameLoop()
 {
 	LOGVERBOSE("GameManager::MainGameLoop()", "Main game loop started");
 	glClearColor(0.f, 0.f, 0.5f, 1.0f);
-
+	
 	InitializeImGui();
 		
 	InitializeTestECS();
-
 	// Play one frame before showing the window so that we can avoid the white screen of death
 	StartNewFrame();
 	EventTick();
@@ -72,6 +71,8 @@ void GameManager::MainGameLoop()
 		StartNewFrame();
 		EventTick();
 		ManagerTick();
+
+
 		EndFrame();
 	}
 
@@ -129,4 +130,105 @@ float GameManager::GetFPS()
 float GameManager::GetTime()
 {
 	return GameTime;
+}
+
+void ShaderPractice() {
+	const GLchar* vertexShaderSource =
+		"#version 330 core\n"
+		"layout (location = 0) in vec3 position;\n"
+		"out vec3 FragColor;\n"
+		"void main()\n"
+		"{\n"
+		"gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
+		"FragColor = vec3(position.x, position.y, position.z);\n"
+		"}\0";
+
+	unsigned int VertexShader;
+	VertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(VertexShader, 1, &vertexShaderSource, NULL);
+	glCompileShader(VertexShader);
+
+	int Success;
+	char InfoLog[512];
+	glGetShaderiv(VertexShader, GL_COMPILE_STATUS, &Success);
+
+	if (!Success)
+	{
+		glGetShaderInfoLog(VertexShader, 512, NULL, InfoLog);
+		LOGERROR("ShaderCompiler::CompileShaderProgram()", "Vertex Shader: " + std::string(InfoLog));
+	}
+
+	const GLchar* fragmentShaderSource =
+		"#version 330 core\n"
+		"out vec4 color;\n"
+		"in vec3 FragColor;"
+		"void main()\n"
+		"{\n"
+		"color = vec4(FragColor, 1.0f);\n"
+		"}\n\0";
+
+	unsigned int FragmentShader;
+	FragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(FragmentShader, 1, &fragmentShaderSource, NULL);
+	glCompileShader(FragmentShader);
+
+	glGetShaderiv(FragmentShader, GL_COMPILE_STATUS, &Success);
+
+	if (!Success)
+	{
+		glGetShaderInfoLog(FragmentShader, 512, NULL, InfoLog);
+		LOGERROR("ShaderCompiler::CompileShaderProgram()", "Fragment Shader: " + std::string(InfoLog));
+		glDeleteShader(VertexShader);
+	}
+
+	GLuint ShaderProgram = glCreateProgram();
+
+	glAttachShader(ShaderProgram, VertexShader);
+	glAttachShader(ShaderProgram, FragmentShader);
+	glLinkProgram(ShaderProgram);
+
+	glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
+	if (!Success) {
+		glGetProgramInfoLog(ShaderProgram, 512, NULL, InfoLog);
+		LOGERROR("TShaderCompiler::CompileShaderProgram()", "Shader Program: " + std::string(InfoLog));
+		glDeleteShader(VertexShader); // delete shaders after shader program is created
+		glDeleteShader(FragmentShader);
+	}
+
+	glDeleteShader(VertexShader); // delete shaders after shader program is created
+	glDeleteShader(FragmentShader);
+
+	// ======================================
+
+	float Vertices[] = {
+	 0.5f,  0.5f, 0.0f,// bottom right
+	 0.5f, -0.5f, 0.0f,// top right
+	-0.5f, -0.5f, 0.0f,// top left
+	-0.5f,  0.5f, 0.0f, // bottom left 
+	};
+
+	unsigned int Indices[] = {
+		0, 1, 3,   // first triangle
+		1, 2, 3    // second triangle
+	};
+
+	GLuint VAO, VBO;
+	GLuint EBO;
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+	glEnableVertexAttribArray(0);
+
+	{//OnRender
+	glBindVertexArray(VAO);
+	glUseProgram(ShaderProgram);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
 }
