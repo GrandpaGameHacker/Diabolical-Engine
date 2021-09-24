@@ -20,11 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Diabolical.cpp" />
+    <ClCompile Include="Engine\Assets\ArchiveAsset.cpp" />
+    <ClCompile Include="Engine\Assets\TextAsset.cpp" />
     <ClCompile Include="Engine\ECS\flecs-os_api-stdcpp.cpp" />
     <ClCompile Include="Engine\ECS\flecs.c" />
     <ClCompile Include="Engine\EngineMain.cpp" />
     <ClCompile Include="Engine\Rendering\ECSImGuiTest\ImGuiECS.cpp" />
     <ClCompile Include="Engine\Rendering\FreetypeFontAsset.cpp" />
+    <ClCompile Include="Engine\Rendering\ShaderCompiler.cpp" />
     <ClCompile Include="Engine\WindowManager.cpp" />
     <ClCompile Include="Engine\Logging\Logging.cpp" />
     <ClCompile Include="Engine\Utility\Utility.cpp" />
@@ -43,12 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Diabolical.h" />
+    <ClInclude Include="Engine\Assets\ArchiveAsset.h" />
+    <ClInclude Include="Engine\Assets\TextAsset.h" />
     <ClInclude Include="Engine\ECS\flecs.h" />
     <ClInclude Include="Engine\ECS\flecs_os_api_stdcpp.h" />
     <ClInclude Include="Engine\EngineMain.h" />
     <ClInclude Include="Engine\Rendering\ECSImGuiTest\ImGuiECS.h" />
     <ClInclude Include="Engine\Rendering\FreetypeFontAsset.h" />
     <ClInclude Include="Engine\Rendering\RendererComponents.h" />
+    <ClInclude Include="Engine\Rendering\ShaderCompiler.h" />
     <ClInclude Include="Engine\WindowManager.h" />
     <ClInclude Include="Engine\Logging\Logging.h" />
     <ClInclude Include="Engine\Utility\Utility.h" />
@@ -188,7 +194,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -205,7 +211,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>

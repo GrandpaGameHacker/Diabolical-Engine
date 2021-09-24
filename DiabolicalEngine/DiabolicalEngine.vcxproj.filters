@@ -78,6 +78,15 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Rendering\ShaderCompiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Assets\TextAsset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Assets\ArchiveAsset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\ECS\flecs.h">
@@ -152,6 +161,15 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Rendering\ShaderCompiler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Assets\TextAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Assets\ArchiveAsset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Rendering\Shaders\FXAAFragment.glsl" />
@@ -164,8 +182,6 @@
     <None Include="Engine\Rendering\Shaders\SpriteVertex.glsl" />
     <None Include="Engine\Rendering\Shaders\TextFragment.glsl" />
     <None Include="Engine\Rendering\Shaders\TextVertex.glsl" />
-    <None Include="imgui-1.84.2\examples\example_emscripten_opengl3\shell_minimal.html" />
-    <None Include="imgui-1.84.2\examples\example_emscripten_wgpu\web\index.html" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Engine\NewFile.txt" />

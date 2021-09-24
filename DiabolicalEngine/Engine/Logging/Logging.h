@@ -39,17 +39,17 @@ protected:
 
 #ifdef LOGGING
 
-#define LOG(DebugScope, DebugString) Logging::Log(DebugScope, DebugString);
-#define LOGVERBOSE(DebugScope, DebugString) Logging::LogVerbose(DebugScope, DebugString);
-#define LOGWARNING(DebugScope, DebugString) Logging::LogWarning(DebugScope, DebugString);
-#define LOGERROR(DebugScope, DebugString) Logging::LogError(DebugScope, DebugString);
+#define LOG(DebugString) Logging::Log(__FUNCSIG__ , DebugString);
+#define LOGVERBOSE( DebugString) Logging::LogVerbose(__FUNCSIG__ , DebugString);
+#define LOGWARNING(DebugString) Logging::LogWarning(__FUNCSIG__ , DebugString);
+#define LOGERROR(DebugString) Logging::LogError(__FUNCSIG__ , DebugString);
 
 #else
 
-#define LOG(DebugScope, DebugString)
-#define LOGVERBOSE(DebugScope, DebugString)
-#define LOGWARNING(DebugScope, DebugString)
-#define LOGERROR(DebugScope, DebugString)
+#define LOG(DebugString)
+#define LOGVERBOSE(DebugString)
+#define LOGWARNING(DebugString)
+#define LOGERROR(DebugString)
 
 #endif
 

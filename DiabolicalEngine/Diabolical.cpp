@@ -6,6 +6,7 @@
 
 #undef main
 int main(int argc, char* argv[]) {
+	Logging::SetLogVerbosity(ELogVerbosity::LV_Verbose);
 	InitializeEngine(argc, argv);
 	RunEngineLoop();
 }

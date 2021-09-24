@@ -20,7 +20,7 @@ class GameAssetSoftPointer
 public:
 	GameAssetSoftPointer(std::filesystem::path AssetPath)
 	{
-		LOG("", AssetPath.string());
+		LOG(AssetPath.string());
 		Internal.Path = AssetPath;
 	}
 
@@ -35,8 +35,8 @@ public:
 			return Asset;
 		}
 
-		LOGWARNING("GameAssetSoftPointer::LoadSynchronous()", "Note: GameAsset memory deallocation needs to be implemented!");
-		LOG("GameAssetSoftPointer::LoadSynchronous()", "Loading asset " + Internal.Path.string());
+		LOGWARNING("Note: GameAsset memory deallocation needs to be implemented!");
+		LOG("Loading asset " + Internal.Path.string());
 
 
 		AssetType* LoadedAsset = AssetType::TryLoad(Internal.Path);

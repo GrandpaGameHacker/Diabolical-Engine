@@ -10,7 +10,7 @@ FreetypeFontAsset* FreetypeFontAsset::TryLoad(std::filesystem::path Path)
 {
 	if (!std::filesystem::exists(Path))
 	{
-		LOGERROR("FreetypeFontAsset::TryLoad()", "Could not find asset at path " + Path.string());
+		LOGERROR("Could not find asset at path " + Path.string());
 		return nullptr;
 	}
 
@@ -26,7 +26,7 @@ FreetypeFontAsset* FreetypeFontAsset::TryLoad(std::filesystem::path Path)
 		error = FT_Init_FreeType(&Library);
 		if (error)
 		{
-			LOGERROR("FreetypeFontAsset::TryLoad()", "Could not init freetype library");
+			LOGERROR("Could not init freetype library");
 		}
 	}
 	error = FT_New_Face(Library,
@@ -36,15 +36,15 @@ FreetypeFontAsset* FreetypeFontAsset::TryLoad(std::filesystem::path Path)
 
 	if (error == FT_Err_Unknown_File_Format)
 	{
-		LOGERROR("FreetypeFontAsset::TryLoad()", "FT_Err_Unknown_File_Format");
+		LOGERROR("FT_Err_Unknown_File_Format");
 	}
 	else if (error == FT_Err_Invalid_Table)
 	{
-		LOGERROR("FreetypeFontAsset::TryLoad()", "FT_Err_Invalid_Table");
+		LOGERROR("FT_Err_Invalid_Table");
 	}
 	else if (error)
 	{
-		LOGERROR("FreetypeFontAsset::TryLoad()", "Could not generate FT_New_Memory_Face, error code = " + std::to_string(error));
+		LOGERROR("Could not generate FT_New_Memory_Face, error code = " + std::to_string(error));
 	}
 
 	FT_Set_Pixel_Sizes(LoadedAsset->Face, 0, 48);
@@ -56,7 +56,7 @@ FreetypeFontAsset* FreetypeFontAsset::TryLoad(std::filesystem::path Path)
 		// load character glyph 
 		if (FT_Load_Char(LoadedAsset->Face, c, FT_LOAD_RENDER))
 		{
-			LOGERROR("FreetypeFontAsset::TryLoad()", "ERROR::FREETYTPE: Failed to load Glyph");
+			LOGERROR("ERROR::FREETYTPE: Failed to load Glyph");
 			continue;
 		}
 		// generate texture

@@ -8,6 +8,10 @@
 #include "../imgui/imgui_impl_opengl3.h"
 #include "../imgui/imgui_impl_sdl.h"
 #include "Rendering/ECSImGuiTest/ImGuiECS.h"
+#include <AL/al.h>
+#include <AL/alc.h>
+#include "Assets/TextAsset.h"
+#include "Assets/GameAssetSoftPointer.h"
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
@@ -42,18 +46,67 @@ void EndFrame()
 
 void InitializeTestECS()
 {
+	GameAssetSoftPointer<TextAsset> TestTextSoftPointer = GameAssetSoftPointer<TextAsset>("EngineAssetFiles/TestText.txt");
+	TextAsset* TestText = TestTextSoftPointer.LoadSynchronous();
+
 	ecs.entity("ImPooi")
-		.add<ImGuiECSTest::ImGuiTestComponent>();	
+		.set([=](ImGuiECSTest::ImGuiTestComponent& p) { p.WindowText = TestText->GetString(); });
+
+
+
 
 	ecs.system<ImGuiECSTest::ImGuiTestComponent>()
 		.each(ImGuiECSTest::ImGuiTestSystem);
 }
 
+void InitializeOpenAL()
+{
+	ALCdevice* device;
+	device = alcOpenDevice(NULL);
+	if (!device)
+	{
+		LOGERROR("alc device null");
+		return;
+	}
+
+	ALCcontext* context;
+
+	context = alcCreateContext(device, NULL);
+	if (!alcMakeContextCurrent(context))
+	{
+		LOGERROR("alc failed to make context current");
+		return;
+	}
+
+	ALfloat listenerOrientation[] = { 0.f, 0.f, 1.f, 0.f, 0.f, 1.f };
+
+	alListener3f(AL_POSITION, 0, 0, 1.f);
+	alListener3f(AL_VELOCITY, 0, 0, 0);
+	alListenerfv(AL_ORIENTATION, listenerOrientation);
+
+	ALuint source;
+
+	alGenSources((ALuint)1, &source);
+
+	alSourcef(source, AL_PITCH, 1);
+	alSourcef(source, AL_GAIN, 1);
+	alSource3f(source, AL_POSITION, 0, 0, 0);
+	alSource3f(source, AL_VELOCITY, 0, 0, 0);
+	alSourcei(source, AL_LOOPING, AL_TRUE);
+
+	ALuint buffer;
+
+	alGenBuffers((ALuint)1, &buffer);
+}
+
+
 void GameManager::MainGameLoop()
 {
-	LOGVERBOSE("GameManager::MainGameLoop()", "Main game loop started");
+	LOGVERBOSE("Main game loop started");
 	glClearColor(0.f, 0.f, 0.5f, 1.0f);
 	
+	InitializeOpenAL();
+
 	InitializeImGui();
 		
 	InitializeTestECS();
@@ -71,8 +124,6 @@ void GameManager::MainGameLoop()
 		StartNewFrame();
 		EventTick();
 		ManagerTick();
-
-
 		EndFrame();
 	}
 
@@ -155,7 +206,7 @@ void ShaderPractice() {
 	if (!Success)
 	{
 		glGetShaderInfoLog(VertexShader, 512, NULL, InfoLog);
-		LOGERROR("ShaderCompiler::CompileShaderProgram()", "Vertex Shader: " + std::string(InfoLog));
+		LOGERROR("Vertex Shader: " + std::string(InfoLog));
 	}
 
 	const GLchar* fragmentShaderSource =
@@ -177,7 +228,7 @@ void ShaderPractice() {
 	if (!Success)
 	{
 		glGetShaderInfoLog(FragmentShader, 512, NULL, InfoLog);
-		LOGERROR("ShaderCompiler::CompileShaderProgram()", "Fragment Shader: " + std::string(InfoLog));
+		LOGERROR("Fragment Shader: " + std::string(InfoLog));
 		glDeleteShader(VertexShader);
 	}
 
@@ -190,7 +241,7 @@ void ShaderPractice() {
 	glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
 	if (!Success) {
 		glGetProgramInfoLog(ShaderProgram, 512, NULL, InfoLog);
-		LOGERROR("TShaderCompiler::CompileShaderProgram()", "Shader Program: " + std::string(InfoLog));
+		LOGERROR("Shader Program: " + std::string(InfoLog));
 		glDeleteShader(VertexShader); // delete shaders after shader program is created
 		glDeleteShader(FragmentShader);
 	}
