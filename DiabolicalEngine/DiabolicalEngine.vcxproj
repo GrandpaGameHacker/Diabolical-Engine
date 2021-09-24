@@ -51,6 +51,7 @@
     <ClInclude Include="Engine\ECS\flecs.h" />
     <ClInclude Include="Engine\ECS\flecs_os_api_stdcpp.h" />
     <ClInclude Include="Engine\EngineMain.h" />
+    <ClInclude Include="Engine\Physics\PhysicsComponents.h" />
     <ClInclude Include="Engine\Rendering\ECSImGuiTest\ImGuiECS.h" />
     <ClInclude Include="Engine\Rendering\FreetypeFontAsset.h" />
     <ClInclude Include="Engine\Rendering\RendererComponents.h" />

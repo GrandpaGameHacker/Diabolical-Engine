@@ -170,6 +170,9 @@
     <ClInclude Include="Engine\Assets\ArchiveAsset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Physics\PhysicsComponents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\Rendering\Shaders\FXAAFragment.glsl" />
