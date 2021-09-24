@@ -12,11 +12,13 @@
 #include <AL/alc.h>
 #include "Assets/TextAsset.h"
 #include "Assets/GameAssetSoftPointer.h"
+#include "FunctionInvoker.h"
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
 int GameManager::Frame = 0;
 flecs::world ecs;
+
 
 void InitializeImGui()
 {
@@ -49,11 +51,12 @@ void InitializeTestECS()
 	GameAssetSoftPointer<TextAsset> TestTextSoftPointer = GameAssetSoftPointer<TextAsset>("EngineAssetFiles/TestText.txt");
 	TextAsset* TestText = TestTextSoftPointer.LoadSynchronous();
 
-	ecs.entity("ImPooi")
-		.set([=](ImGuiECSTest::ImGuiTestComponent& p) { p.WindowText = TestText->GetString(); });
-
-
-
+	ecs.entity()
+		.set([=](ImGuiECSTest::ImGuiTestComponent& p) 
+	{
+		p.WindowText = TestText->GetString(); 
+		p.WindowName = "window"; 
+	});
 
 	ecs.system<ImGuiECSTest::ImGuiTestComponent>()
 		.each(ImGuiECSTest::ImGuiTestSystem);
@@ -163,6 +166,8 @@ void GameManager::ManagerTick()
 	FPS = 1.f / DeltaTime;
 
 	ecs.progress(DeltaTime);
+
+	FunctionInvoker::InvokeAll();
 
 	GameTime += DeltaTime;
 
