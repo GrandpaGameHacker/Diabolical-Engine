@@ -165,6 +165,7 @@ void OpenALMeme()
 	alSourcef(memesource, AL_GAIN, 1);
 	alSource3f(memesource, AL_POSITION, 0, 0, 0);
 	alSource3f(memesource, AL_VELOCITY, 0, 0, 0);
+	alSourcei(memesource, AL_SOURCE_RELATIVE, AL_TRUE);
 	alSourcei(memesource, AL_LOOPING, AL_TRUE);
 
 	

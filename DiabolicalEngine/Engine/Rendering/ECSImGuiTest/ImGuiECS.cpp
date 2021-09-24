@@ -4,12 +4,15 @@
 #include "../../FunctionInvoker.h"
 #include "../../Logging/Logging.h"
 #include <AL/al.h>
+#include <AL/alc.h>
+#include "../../GameManager.h"
 extern flecs::world ecs;
 
 extern float Divisor;
 extern ALuint memebuffer;
 extern ALuint memesource;
 extern char* memeaudio;
+float Panning = 0;
 void ImGuiECSTest::ImGuiTestSystem(ImGuiTestComponent& component)
 {
 	ImGui::Begin((component.WindowName).c_str());
@@ -42,14 +45,15 @@ void ImGuiECSTest::ImGuiTestSystem(ImGuiTestComponent& component)
 		alSourceStop(memesource);
 		alSourcei(memesource, AL_BUFFER, NULL);
 
-		alDeleteBuffers(1, &memebuffer);
-
-		alGenBuffers(1, &memebuffer);
-
 		alBufferData(memebuffer, AL_FORMAT_MONO8, memeaudio, 48000, 48000);
 		alSourcei(memesource, AL_BUFFER, memebuffer);
 
 		alSourcePlay(memesource);
+	}
+
+	if (ImGui::SliderFloat("Panning", &Panning, -1, 1))
+	{
+		alSource3f(memesource, AL_POSITION, Panning, 0, cos(Panning));
 	}
 	ImGui::End();
 }
