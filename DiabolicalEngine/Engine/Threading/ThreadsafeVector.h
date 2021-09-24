@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <mutex>
-#include "Logging/Logging.h"
+#include "../Logging/Logging.h"
 
 struct InvalidIndex : std::exception
 {
