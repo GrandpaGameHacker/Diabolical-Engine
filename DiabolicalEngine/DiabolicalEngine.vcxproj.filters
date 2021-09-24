@@ -173,6 +173,9 @@
     <ClInclude Include="Engine\Assets\ArchiveAsset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Physics\PhysicsComponents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\FunctionInvoker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
