@@ -13,13 +13,16 @@
 #include "Assets/TextAsset.h"
 #include "Assets/GameAssetSoftPointer.h"
 #include "FunctionInvoker.h"
+#include "Audio/AudioUtility.h"
 
 float GameManager::FPS = 0;
 float GameManager::GameTime = 0;
 int GameManager::Frame = 0;
 flecs::world ecs;
-
-
+float Divisor = 20;
+ALuint memebuffer;
+ALuint memesource;
+char* memeaudio;
 void InitializeImGui()
 {
 	ImGui::CreateContext();
@@ -89,7 +92,7 @@ void InitializeOpenAL()
 
 	ALuint source;
 
-	alGenSources((ALuint)1, &source);
+	alGenSources(1, &source);
 
 	alSourcef(source, AL_PITCH, 1);
 	alSourcef(source, AL_GAIN, 1);
@@ -99,16 +102,86 @@ void InitializeOpenAL()
 
 	ALuint buffer;
 
-	alGenBuffers((ALuint)1, &buffer);
+	alGenBuffers(1, &buffer);
+
+	int Channels = 0;
+	int SampleRate = 0;
+	int BPS = 0;
+	int Size = 0;
+	char* Audio = AudioUtility::LoadWAV("EngineAssetFiles/phaser1.wav", Channels, SampleRate, BPS, Size);
+
+	LOG("Sample rate = " + std::to_string(SampleRate));
+	LOG("Channels = " + std::to_string(Channels));
+	LOG("BPS = " + std::to_string(BPS));
+	LOG("Size = " + std::to_string(Size));
+	LOG("Audio Format = " + std::to_string(AudioUtility::ToAlFormat(Channels, BPS)));
+
+	for (float a = 0; a < Size; a++)
+	{
+		Audio[(int)a] = (char)((cos(a / Divisor) + 1) * 20) ;
+	}
+
+	alBufferData(buffer, AudioUtility::ToAlFormat(Channels, BPS), Audio, Size, SampleRate);
+
+
+	alSourcei(source, AL_BUFFER, buffer);
+	alSourcePlay(source);
+
+	ALint source_state = 0;
+	alGetSourcei(source, AL_SOURCE_STATE, &source_state);
+
 }
 
+void OpenALMeme()
+{
+	ALCdevice* device;
+	device = alcOpenDevice(NULL);
+	if (!device)
+	{
+		LOGERROR("alc device null");
+		return;
+	}
+
+	ALCcontext* context;
+
+	context = alcCreateContext(device, NULL);
+	if (!alcMakeContextCurrent(context))
+	{
+		LOGERROR("alc failed to make context current");
+		return;
+	}
+
+	ALfloat listenerOrientation[] = { 0.f, 0.f, 1.f, 0.f, 0.f, 1.f };
+
+	alListener3f(AL_POSITION, 0, 0, 1.f);
+	alListener3f(AL_VELOCITY, 0, 0, 0);
+	alListenerfv(AL_ORIENTATION, listenerOrientation);
+
+	
+
+	alGenSources(1, &memesource);
+
+	alSourcef(memesource, AL_PITCH, 1);
+	alSourcef(memesource, AL_GAIN, 1);
+	alSource3f(memesource, AL_POSITION, 0, 0, 0);
+	alSource3f(memesource, AL_VELOCITY, 0, 0, 0);
+	alSourcei(memesource, AL_LOOPING, AL_TRUE);
+
+	
+
+	alGenBuffers(1, &memebuffer);
+
+	memeaudio = new char[48000];
+
+}
 
 void GameManager::MainGameLoop()
 {
 	LOGVERBOSE("Main game loop started");
 	glClearColor(0.f, 0.f, 0.5f, 1.0f);
 	
-	InitializeOpenAL();
+	//InitializeOpenAL();
+	OpenALMeme();
 
 	InitializeImGui();
 		

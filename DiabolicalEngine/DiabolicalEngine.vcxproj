@@ -49,6 +49,7 @@
     <ClInclude Include="Diabolical.h" />
     <ClInclude Include="Engine\Assets\ArchiveAsset.h" />
     <ClInclude Include="Engine\Assets\TextAsset.h" />
+    <ClInclude Include="Engine\Audio\AudioUtility.h" />
     <ClInclude Include="Engine\ECS\flecs.h" />
     <ClInclude Include="Engine\ECS\flecs_os_api_stdcpp.h" />
     <ClInclude Include="Engine\EngineMain.h" />
